@@ -204,16 +204,25 @@ function chars(input) {
 function findPersonFamily(foundPerson, people) {
     let foundPersonId = foundPerson.id;
     let foundPersonParents = foundPerson.parents;
+    let personFamily = [];
 
-// It is note-worthy to mention the conditionals could be in one if statement but was easier to write/read in an else if.
-    let personFamily = people.filter(function (person) {
-        if (person.currentSpouse == foundPersonId || foundPersonParents.includes(person.id)) {
-            return true;
-        }
-        else if (person.parents[0] == foundPersonParents[0] && foundPersonParents[0] !== undefined && person.id !== foundPersonId) {
+    let personSpouse = people.filter(function (person) {
+        if (person.currentSpouse == foundPersonId) {
             return true;
         }
     });
+    let personParents = people.filter(function (person) {
+        if (foundPersonParents.includes(person.id)) {
+            return true;
+        }
+    });
+    let personSiblings = people.filter(function(person) {
+        if (person.parents[0] == foundPersonParents[0] && foundPersonParents[0] !== undefined && person.id !== foundPersonId) {
+            return true;
+        }
+    });
+
+    
 
     return personFamily;
 }
