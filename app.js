@@ -73,7 +73,8 @@ function mainMenu(person, people) {
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
             let personFamily = findPersonFamily(person[0], people);
-            displayPeople(personFamily);
+            alert(personFamily);
+            //displayPeople(personFamily);
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -122,13 +123,12 @@ function searchByName(people) {
  * @param {Array} people        A collection of person objects.
  */
 function displayPeople(people) {
-    alert(
-        people
+    let peopleArray = people
             .map(function (person) {
                 return `${person.firstName} ${person.lastName}`;
             })
-            .join("\n")
-    );
+            .join("\n");
+    return peopleArray;
 }
 // End of displayPeople()
 
@@ -204,7 +204,6 @@ function chars(input) {
 function findPersonFamily(foundPerson, people) {
     let foundPersonId = foundPerson.id;
     let foundPersonParents = foundPerson.parents;
-    let personFamily = [];
 
     let personSpouse = people.filter(function (person) {
         if (person.currentSpouse == foundPersonId) {
@@ -222,8 +221,70 @@ function findPersonFamily(foundPerson, people) {
         }
     });
 
-    
+    let personFamily = combinedFamilyArrays(personSpouse, personParents, personSiblings);
 
     return personFamily;
 }
 
+
+function combinedFamilyArrays(spouseArray, parentArray, siblingArray){
+    let familyArray = [];
+
+    arrayPush(familyArray, spouseArray, "Spouse");
+    arrayPush(familyArray, parentArray, "Parents");
+    arrayPush(familyArray, siblingArray, "Siblings");
+
+
+
+
+    // if (spouseArray.length > 0) {
+    //     familyArray.push("Spouse:\n");
+    //     for (let i=0; i<spouseArray.length; i++) {
+    //         familyArray.push(`${spouseArray[i].firstName} ${spouseArray[i].lastName}`);
+    //     }
+    // }
+    // else {
+    //     familyArray.push("No spouse found.\n");
+    // }
+
+    // familyArray.push(" \n")
+
+    // if (parentArray.length > 0) {
+    //     familyArray.push("Parents:\n");
+    //     for (let i=0; i<parentArray.length; i++) {
+    //         familyArray.push(`${parentArray[i].firstName} ${parentArray[i].lastName}`);
+    //     }
+    // }
+    // else {
+    //     familyArray.push("No parents found.\n");
+    // }
+
+    // familyArray.push(" \n")
+
+    // if (siblingArray.length > 0) {
+    //     familyArray.push("Siblings:\n");
+    //     for (let i=0; i<siblingArray.length; i++) {
+    //         familyArray.push(`${siblingArray[i].firstName} ${siblingArray[i].lastName}`);
+    //     }
+    // }
+    // else {
+    //     familyArray.push("No siblings found.\n");
+    // }
+
+    return familyArray;
+
+}
+
+function arrayPush(familyArray, memberArray, memberType){
+    if (memberArray.length > 0) {
+        familyArray.push(`${memberType}:\n`);
+        for (let i=0; i<memberArray.length; i++) {
+            familyArray.push(`${memberArray[i].firstName} ${memberArray[i].lastName}`);
+        }
+    }
+    else {
+        familyArray.push(`No ${memberType.toLowerCase()} found.\n`);
+    }
+
+    familyArray.push("\n")
+}
