@@ -73,7 +73,7 @@ function mainMenu(person, people) {
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
             let personFamily = findPersonFamily(person[0], people);
-            alert(personFamily);
+            displayPeople(personFamily);
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -140,8 +140,15 @@ function displayPeople(people) {
 function displayPerson(person) {
     let personInfo = `First Name: ${person.firstName}\n`;
     personInfo += `Last Name: ${person.lastName}\n`;
+    personInfo += `ID: ${person.id}\n`;
+    personInfo += `Gender: ${person.gender}\n`;
+    personInfo += `DOB: ${person.dob}\n`;
+    personInfo += `Height: ${person.height}\n`;
+    personInfo += `Weight: ${person.weight}\n`;
+    personInfo += `Eye Color: ${person.eyeColor}\n`;
+    personInfo += `Occupation: ${person.occupation}\n`;
     //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
-    alert(personInfo);
+    return personInfo;
 }
 // End of displayPerson()
 
@@ -184,3 +191,30 @@ function chars(input) {
 
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
+
+
+/**
+ * This function filters our data of people to find the passed Object's (person's) siblings, parents, and spouse.
+ * It has built in checking to ensure the foundPerson is not put into the new filtered Array.
+ * 
+ * @param {Object} foundPerson      The result of our initial person search.
+ * @param {Array} people            Our collection of people data.
+ * @returns {Array}                 The resultant filtered set of foundPerson's family from our data set.
+ */
+function findPersonFamily(foundPerson, people) {
+    let foundPersonId = foundPerson.id;
+    let foundPersonParents = foundPerson.parents;
+
+// It is note-worthy to mention the conditionals could be in one if statement but was easier to write/read in an else if.
+    let personFamily = people.filter(function (person) {
+        if (person.currentSpouse == foundPersonId || foundPersonParents.includes(person.id)) {
+            return true;
+        }
+        else if (person.parents[0] == foundPersonParents[0] && foundPersonParents[0] !== undefined && person.id !== foundPersonId) {
+            return true;
+        }
+    });
+
+    return personFamily;
+}
+
