@@ -73,8 +73,8 @@ function mainMenu(person, people) {
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
             let personFamily = findPersonFamily(person[0], people);
+            //let peopleInfo = displayPeople(personFamily);
             alert(personFamily);
-            //displayPeople(personFamily);
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -124,8 +124,9 @@ function searchByName(people) {
  */
 function displayPeople(people) {
     let peopleArray = people
-            .map(function (person) {
-                return `${person.firstName} ${person.lastName}`;
+            .map(function () {
+                return;
+                // return `${person.firstName} ${person.lastName}`;
             })
             .join("\n");
     return peopleArray;
@@ -228,11 +229,11 @@ function findPersonFamily(foundPerson, people) {
 
 
 function combinedFamilyArrays(spouseArray, parentArray, siblingArray){
-    let familyArray = [];
+    let familyArray = "";
 
-    arrayPush(familyArray, spouseArray, "Spouse");
-    arrayPush(familyArray, parentArray, "Parents");
-    arrayPush(familyArray, siblingArray, "Siblings");
+    familyArray += arrayPush(spouseArray, "Spouse");
+    familyArray += arrayPush(parentArray, "Parents");
+    familyArray += arrayPush(siblingArray, "Siblings");
 
 
 
@@ -275,16 +276,33 @@ function combinedFamilyArrays(spouseArray, parentArray, siblingArray){
 
 }
 
-function arrayPush(familyArray, memberArray, memberType){
+function arrayPush(memberArray, memberType){
+    let familyArrayHolder = "";
     if (memberArray.length > 0) {
-        familyArray.push(`${memberType}:\n`);
+        familyArrayHolder += (`${memberType}:\n`);
         for (let i=0; i<memberArray.length; i++) {
-            familyArray.push(`${memberArray[i].firstName} ${memberArray[i].lastName}`);
+            familyArrayHolder += (`${memberArray[i].firstName} ${memberArray[i].lastName}\n`);
         }
     }
     else {
-        familyArray.push(`No ${memberType.toLowerCase()} found.\n`);
+        familyArrayHolder += (`No ${memberType.toLowerCase()} found.\n`);
     }
 
-    familyArray.push("\n")
+    familyArrayHolder += ("\n")
+
+    return familyArrayHolder;
 }
+
+// function arrayPush(familyArray, memberArray, memberType){
+//     if (memberArray.length > 0) {
+//         familyArray.push(`${memberType}:\n`);
+//         for (let i=0; i<memberArray.length; i++) {
+//             familyArray.push(`${memberArray[i].firstName} ${memberArray[i].lastName}\n`);
+//         }
+//     }
+//     else {
+//         familyArray.push(`No ${memberType.toLowerCase()} found.\n`);
+//     }
+
+//     familyArray.push("\n")
+// }
