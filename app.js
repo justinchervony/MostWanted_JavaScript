@@ -306,3 +306,19 @@ function arrayPush(memberArray, memberType){
 
 //     familyArray.push("\n")
 // }
+
+
+function findPersonDescendants(personObj, peopleArray, personDescendantArray = []){
+    let personId = personObj.id;
+    personDescendantArray = personDescendantArray.concat(peopleArray.filter(function(person) {
+        if (person.parents.includes(personId)){
+            return true;
+        }
+    }));
+    for (let i = 0; i < personDescendantArray.length; i++) {
+        personDescendantArray = personDescendantArray.concat(
+            findPersonDescendants(personDescendantArray[i], peopleArray)
+        )
+    }
+    return personDescendantArray;
+};
