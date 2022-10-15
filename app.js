@@ -80,7 +80,10 @@ function mainMenu(person, people) {
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
             let personDescendants = findPersonDescendants(person[0], people);
-            alert(personDescendants);
+            if (personDescendants.length == 0){
+                alert("No descendants found.")
+            }
+            else (displayPeople(personDescendants));
             break;
         case "restart":
             // Restart app() from the very beginning
@@ -122,14 +125,14 @@ function searchByName(people) {
  * to the user in the form of an alert().
  * @param {Array} people        A collection of person objects.
  */
-function displayPeople(people) {
-    let peopleArray = people
-            .map(function () {
-                return;
-                // return `${person.firstName} ${person.lastName}`;
+ function displayPeople(people) {
+    alert(
+        people
+            .map(function (person) {
+                return `${person.firstName} ${person.lastName}`;
             })
-            .join("\n");
-    return peopleArray;
+            .join("\n")
+    );
 }
 // End of displayPeople()
 
@@ -315,7 +318,8 @@ function findPersonDescendants(personObj, peopleArray, personDescendantArray = [
             return true;
         }
     }));
-    for (let i = 0; i < personDescendantArray.length; i++) {
+    let arrayLength = personDescendantArray.length;
+    for (let i = 0; i < arrayLength; i++) {
         personDescendantArray = personDescendantArray.concat(
             findPersonDescendants(personDescendantArray[i], peopleArray)
         )
