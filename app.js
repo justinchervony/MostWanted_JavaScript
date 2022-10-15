@@ -318,7 +318,7 @@ function findPersonDescendants(personObj, peopleArray, personDescendantArray = [
             return true;
         }
     }));
-    let arrayLength = personDescendantArray.length;
+    let arrayLength = personDescendantArray.length;    //This is done to avoid the for loop growing during concatenation and redoing an iteration (one that will yield no results, thankfully, but still is a wasted loop).
     for (let i = 0; i < arrayLength; i++) {
         personDescendantArray = personDescendantArray.concat(
             findPersonDescendants(personDescendantArray[i], peopleArray)
@@ -326,3 +326,34 @@ function findPersonDescendants(personObj, peopleArray, personDescendantArray = [
     }
     return personDescendantArray;
 };
+
+
+function searchByTraits(people){
+    let displayOption = prompt(`Do you want to search by:\n
+    'Gender'\n
+    'DOB'\n
+    'Height'\n
+    'Weight'\n
+    'Eye Color'\n
+    'Occupation'?\n
+    Type the option you want or type 'restart' or 'quit'.`);
+
+    switch (displayOption) {
+        case "info":
+            break;
+        case "family":
+            break;
+        case "descendants":
+            break;
+        case "restart":
+            // Restart app() from the very beginning
+            app(people);
+            break;
+        case "quit":
+            // Stop application execution
+            return;
+        default:
+            // Prompt user again. Another instance of recursion
+            return searchByTraits(people);
+    }
+}
