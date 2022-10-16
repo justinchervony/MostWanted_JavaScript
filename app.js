@@ -106,8 +106,8 @@ function mainMenu(person, people) {
  * @returns {Array}             An array containing the person-object (or empty array if no match)
  */
 function searchByName(people) {
-    let firstName = promptFor("What is the person's first name?", chars);
-    let lastName = promptFor("What is the person's last name?", chars);
+    let firstName = promptFor("What is the person's first name?", chars, people, 'firstName');
+    let lastName = promptFor("What is the person's last name?", chars, people, 'lastName');
 
     // The foundPerson value will be of type Array. Recall that .filter() ALWAYS returns an array.
     let foundPerson = people.filter(function (person) {
@@ -164,10 +164,10 @@ function displayPerson(person) {
  * @param {Function} valid      A callback function used to validate basic user input.
  * @returns {String}            The valid string input retrieved from the user.
  */
-function promptFor(question, valid) {
+function promptFor(question, valid, people, trait) {
     do {
         var response = prompt(question).trim();
-    } while (!response || !valid(response));
+    } while (!response || !valid(response, people, trait));
     return response;
 }
 // End of promptFor()
@@ -188,8 +188,15 @@ function yesNo(input) {
  * @param {String} input        A string.
  * @returns {Boolean}           Default validation -- no logic yet.
  */
-function chars(input) {
-    return true; // Default validation only
+function chars(input, people, trait) {
+    if (people.filter(function(person){
+        if (person[trait] == input){
+            return true;
+        }
+    }).length >0)
+        return true;
+    else 
+        return false;
 }
 // End of chars()
 
@@ -369,4 +376,5 @@ function searchForPeople(trait, userTraitSearch, people, array = []){
             return true
         };
     });
+    return array;
 };
