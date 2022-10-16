@@ -339,11 +339,14 @@ function searchByTraits(people){
     Type the option you want or type 'restart' or 'quit'.`);
 
     switch (displayOption) {
-        case "info":
-            break;
-        case "family":
-            break;
-        case "descendants":
+        case "Gender":
+        case "DOB":
+        case "Height":
+        case "Weight":
+        case "Eye Color":
+        case "Occupation":
+            let traitDescription = prompt(`Input desired ${displayOption} to search by.`);
+            let searchResults = searchForPeople(displayOption, traitDescription, people);
             break;
         case "restart":
             // Restart app() from the very beginning
@@ -355,5 +358,15 @@ function searchByTraits(people){
         default:
             // Prompt user again. Another instance of recursion
             return searchByTraits(people);
-    }
-}
+    };
+    userDecision = prompt("Type the name of the selected person you would like to search")
+};
+
+function searchForPeople(trait, userTraitSearch, people, array = []){
+    trait = trait.toLowerCase();
+    array = people.filter(function(person){
+        if (person[trait] == userTraitSearch){
+            return true
+        };
+    });
+};
