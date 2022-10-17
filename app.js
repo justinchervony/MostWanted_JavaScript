@@ -244,44 +244,6 @@ function combinedFamilyArrays(spouseArray, parentArray, siblingArray){
     familyArray += arrayPush(spouseArray, "Spouse");
     familyArray += arrayPush(parentArray, "Parents");
     familyArray += arrayPush(siblingArray, "Siblings");
-
-
-
-
-    // if (spouseArray.length > 0) {
-    //     familyArray.push("Spouse:\n");
-    //     for (let i=0; i<spouseArray.length; i++) {
-    //         familyArray.push(`${spouseArray[i].firstName} ${spouseArray[i].lastName}`);
-    //     }
-    // }
-    // else {
-    //     familyArray.push("No spouse found.\n");
-    // }
-
-    // familyArray.push(" \n")
-
-    // if (parentArray.length > 0) {
-    //     familyArray.push("Parents:\n");
-    //     for (let i=0; i<parentArray.length; i++) {
-    //         familyArray.push(`${parentArray[i].firstName} ${parentArray[i].lastName}`);
-    //     }
-    // }
-    // else {
-    //     familyArray.push("No parents found.\n");
-    // }
-
-    // familyArray.push(" \n")
-
-    // if (siblingArray.length > 0) {
-    //     familyArray.push("Siblings:\n");
-    //     for (let i=0; i<siblingArray.length; i++) {
-    //         familyArray.push(`${siblingArray[i].firstName} ${siblingArray[i].lastName}`);
-    //     }
-    // }
-    // else {
-    //     familyArray.push("No siblings found.\n");
-    // }
-
     return familyArray;
 
 }
@@ -303,21 +265,6 @@ function arrayPush(memberArray, memberType){
     return familyArrayHolder;
 }
 
-// function arrayPush(familyArray, memberArray, memberType){
-//     if (memberArray.length > 0) {
-//         familyArray.push(`${memberType}:\n`);
-//         for (let i=0; i<memberArray.length; i++) {
-//             familyArray.push(`${memberArray[i].firstName} ${memberArray[i].lastName}\n`);
-//         }
-//     }
-//     else {
-//         familyArray.push(`No ${memberType.toLowerCase()} found.\n`);
-//     }
-
-//     familyArray.push("\n")
-// }
-
-
 function findPersonDescendants(personObj, peopleArray, personDescendantArray = []){
     let personId = personObj.id;
     personDescendantArray = personDescendantArray.concat(peopleArray.filter(function(person) {
@@ -335,7 +282,7 @@ function findPersonDescendants(personObj, peopleArray, personDescendantArray = [
 };
 
 
-function searchByTraits(people){
+function searchByTraits(people, filteredPeople = people, selectedFilterList = []){
     let displayOption = prompt(`Do you want to search by:\n
     'Gender'\n
     'DOB'\n
@@ -353,7 +300,32 @@ function searchByTraits(people){
         case "Eye Color":
         case "Occupation":
             let traitDescription = prompt(`Input desired ${displayOption} to search by.`);
-            let searchResults = searchForPeople(displayOption, traitDescription, people);
+            let searchResults = searchForPeople(displayOption, traitDescription, filteredPeople);
+            filteredPeople = searchResults;
+            selectedFilterList.push(displayOption);
+            selectedFilterDisplay(selectedFilterList);
+            displayPeople(searchResults);
+            let userDecision = prompt(`Do you know the name of the person you would like to search for? \n 
+            Type 'yes' to input the name', type 'another' to filter again by another criteria, or type 'restart' or 'quit'.`)
+
+            switch(userDecision){
+                case "yes":
+                    searchResults = searchByName(people);
+                    break
+                case "another":
+                    return searchByTraits(people, filteredPeople, selectedFilterList = []);
+                case "restart":
+                    // Restart app() from the very beginning
+                    app(people);
+                    break;
+                case "quit":
+                    // Stop application execution
+                    return;
+                default:
+                    // Prompt user again. Another instance of recursion
+                    return prompt("Type the name of the selected person you would like to search, type 'another' to filter again by another criteria, or type 'restart' or 'quit'.")
+            }
+            return searchResults;
             break;
         case "restart":
             // Restart app() from the very beginning
@@ -364,17 +336,28 @@ function searchByTraits(people){
             return;
         default:
             // Prompt user again. Another instance of recursion
-            return searchByTraits(people);
+            return searchByTraits(people, filteredPeople = people, selectedFilterList = []);
     };
-    userDecision = prompt("Type the name of the selected person you would like to search")
+    
 };
 
-function searchForPeople(trait, userTraitSearch, people, array = []){
+function searchForPeople(trait, userTraitSearch, filteredPeople, array = []){
     trait = trait.toLowerCase();
-    array = people.filter(function(person){
+    array = filteredPeople.filter(function(person){
         if (person[trait] == userTraitSearch){
             return true
         };
     });
     return array;
 };
+
+
+function selectedFilterDisplay(selectedFilterList) {
+    alert(`The following list of people were filtered by:\n` +
+        selectedFilterList
+            .map(function (filter) {
+                return `${filter}`;
+            })
+            .join("\n")
+    );
+}
